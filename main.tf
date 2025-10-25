@@ -45,8 +45,7 @@ resource "aws_security_group" "ec2_sg" {
 
 resource "aws_key_pair" "ec2_key" {
     key_name = "ec2-key"
-    # TODO this won't work in CI/CD
-    public_key = file("~/.ssh/id_rsa.pub")
+    public_key = ${var.public_key}
 }
 
 resource "aws_instance" "ubuntu_ec2" {
