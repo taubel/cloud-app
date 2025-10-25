@@ -45,7 +45,7 @@ resource "aws_security_group" "ec2_sg" {
 
 resource "aws_key_pair" "ec2_key" {
     key_name = "ec2-key"
-    public_key = ${var.public_key}
+    public_key = var.PUBLIC_KEY
 }
 
 resource "aws_instance" "ubuntu_ec2" {
