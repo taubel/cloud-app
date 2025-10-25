@@ -1,0 +1,1 @@
+variable "PUBLIC_KEY" {}
