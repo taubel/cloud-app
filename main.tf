@@ -11,7 +11,6 @@ terraform {
     key            = "terraform.tfstate"
     region         = "eu-north-1"
     encrypt        = true
-    dynamodb_table = "terraform-locks"  # ensures concurrency safety
   }
 }
 
