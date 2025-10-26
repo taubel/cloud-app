@@ -16,7 +16,6 @@ env:
 
 jobs:
   terraform:
-    if: github.repository != 'hashicorp-education/learn-terraform-github-actions'
     name: "Terraform Apply"
     runs-on: ubuntu-latest
     permissions:
@@ -31,18 +30,20 @@ jobs:
         with:
           terraform_version: 1.9.8
 
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v3
+        with:
+          name: tfplan
+
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Apply
-        id: apply
-        run: |
-          terraform apply -auto-approve
+        run: terraform apply -auto-approve tfplan
 
       - name: Save Outputs
         id: save_output
         run: |
-          # capture public_ip and user from Terraform outputs
           public_ip=$(terraform output -raw public_ip)
           echo "public_ip=$public_ip" >> "$GITHUB_OUTPUT"
           echo "user=ubuntu" >> "$GITHUB_OUTPUT"
