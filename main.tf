@@ -43,14 +43,14 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-# resource "aws_key_pair" "ec2_key" {
-#     key_name = "ec2-key"
-#     public_key = var.public_key
-# }
+resource "aws_key_pair" "ec2_key" {
+    key_name = "ec2-key"
+    public_key = var.ssh_public_key
+}
 
 resource "aws_instance" "ubuntu_ec2" {
   ami                    = data.aws_ami.ubuntu.id
-#   key_name               = aws_key_pair.ec2_key.key_name
+  key_name               = aws_key_pair.ec2_key.key_name
   instance_type          = "t3.micro"
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 }
