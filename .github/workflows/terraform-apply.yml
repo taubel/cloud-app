@@ -11,7 +11,8 @@ env:
   TF_WORKSPACE: "learn-terraform-github-actions"
   TF_VAR_ssh_public_key: "${{ secrets.SSH_PUBLIC_KEY }}"
   CONFIG_DIRECTORY: "./"
-
+  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
 jobs:
   terraform:
