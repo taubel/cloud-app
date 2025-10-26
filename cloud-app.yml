@@ -1,12 +1,7 @@
-- name: Test
+- name: Deploy cloud app
   hosts: all
   gather_facts: false
 
-  tasks:
-    - name: Run ls
-      ansible.builtin.shell: ls /
-      register: ls_output
-
-    - name: Show the output
-      ansible.builtin.debug:
-        var: ls_output.stdout_lines
+  roles:
+    - role: geerlingguy.docker
+    - role: cloud_app
