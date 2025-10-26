@@ -21,6 +21,9 @@ jobs:
     permissions: # granular permissions
       # so GitHub can check out this repo using the default github.token
       contents: read
+    outputs:
+      public_ip: ${{ steps.save_output.outputs.public_ip }}
+      user: ${{ steps.save_output.outputs.user }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -46,6 +49,13 @@ jobs:
         with:
           run: ${{ steps.apply-run.outputs.run_id }}
           comment: "Apply Run from GitHub Actions CI ${{ github.sha }}"
+
+      - name: Save Public IP Address
+        id: save_output
+        # TODO read user from output
+        run: |
+          echo "public_ip=$(cat public_ip.txt)" >> "$GITHUB_OUTPUT"
+          echo "user=ubuntu" >> "$GITHUB_OUTPUT"
 
   deploy:
     runs-on: ubuntu-latest
