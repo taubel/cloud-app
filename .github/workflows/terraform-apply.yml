@@ -9,6 +9,7 @@ env:
   TF_CLOUD_ORGANIZATION: "Taubel"
   TF_API_TOKEN: "${{ secrets.TF_API_TOKEN }}"
   TF_WORKSPACE: "learn-terraform-github-actions"
+  TF_VAR_ssh_public_key: "${{ secrets.SSH_PUBLIC_KEY }}"
   CONFIG_DIRECTORY: "./"
 
 
