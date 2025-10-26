@@ -61,8 +61,3 @@ resource "aws_instance" "ubuntu_ec2" {
   instance_type          = "t3.micro"
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 }
-
-resource "local_file" "public_ip" {
-    content  = aws_instance.ubuntu_ec2.public_ip
-    filename = "public_ip.txt"
-}
