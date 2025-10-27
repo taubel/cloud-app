@@ -29,6 +29,9 @@ jobs:
       - build_and_publish
     if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/terraform-apply.yml
+    permissions:
+      contents: read
+      pull-requests: write
     with:
       workspace: staging
       deploy_env: staging
@@ -44,6 +47,9 @@ jobs:
       - build_and_publish
     if: startsWith(github.ref, 'refs/tags/')
     uses: ./.github/workflows/terraform-apply.yml
+    permissions:
+      contents: read
+      pull-requests: write
     with:
       workspace: prod
       deploy_env: prod
