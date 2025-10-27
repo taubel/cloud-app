@@ -60,6 +60,7 @@ jobs:
 
   terraform_apply:
     runs-on: ubuntu-latest
+    needs: terraform_plan
     outputs:
       public_ip: ${{ steps.save_outputs.outputs.public_ip }}
       user: ${{ steps.save_outputs.outputs.user }}
