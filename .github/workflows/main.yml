@@ -58,6 +58,10 @@ jobs:
       workspace: staging
       deploy_env: staging
       app_image: latest
+    secrets:
+      ssh_public_key: "${{ secrets.SSH_PUBLIC_KEY }}"
+      aws_access_key: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      aws_secret_access_key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
   deploy_to_production:
     name: "Deploy to Production"
