@@ -10,6 +10,11 @@ on:
     branches:
       - master
 
+env:
+  TF_VAR_ssh_public_key: "${{ secrets.SSH_PUBLIC_KEY }}"
+  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
 jobs:
   build_and_publish:
     uses: ./.github/workflows/docker-publish.yml
