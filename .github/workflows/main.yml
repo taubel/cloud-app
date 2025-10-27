@@ -9,6 +9,9 @@ on:
   pull_request:
 
 jobs:
+  build:
+    uses: ./.github/workflows/docker-publish.yml
+
   terraform_plan:
     name: "Terraform Plan"
     runs-on: ubuntu-latest
