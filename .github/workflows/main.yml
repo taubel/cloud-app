@@ -74,3 +74,7 @@ jobs:
       workspace: prod
       deploy_env: prod
       app_image: ${{ github.ref_name }}
+    secrets:
+      ssh_public_key: "${{ secrets.SSH_PUBLIC_KEY }}"
+      aws_access_key: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      aws_secret_access_key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
