@@ -10,11 +10,6 @@ on:
         required: true
         type: string
 
-env:
-  TF_VAR_ssh_public_key: "${{ secrets.SSH_PUBLIC_KEY }}"
-  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-
 jobs:
   terraform_apply:
     runs-on: ubuntu-latest
@@ -54,6 +49,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: terraform_apply
+    env:
+      TF_VAR_ssh_public_key: "${{ secrets.SSH_PUBLIC_KEY }}"
+      AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
     environment:
       name: ${{ inputs.deploy_env }}
       url: http://${{ needs.terraform_apply.outputs.public_ip }}
