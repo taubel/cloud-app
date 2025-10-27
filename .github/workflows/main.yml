@@ -23,34 +23,9 @@ jobs:
       packages: write
       id-token: write
 
-  terraform_plan:
-    name: "Terraform Plan"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9.8
-      - name: Terraform Init
-        run: terraform init
-      - name: Terraform Plan
-        id: plan
-        run: |
-          terraform plan -out=tfplan
-          terraform show -json tfplan > plan.json
-      - name: Upload Terraform Plan
-        uses: actions/upload-artifact@v4
-        with:
-          name: tfplan
-          path: ./tfplan
-
   deploy_to_staging:
     name: "Deploy to Staging"
     needs:
-      - terraform_plan
       - build_and_publish
     if: github.ref == 'refs/heads/master'
     uses: ./.github/workflows/terraform-apply.yml
@@ -66,7 +41,6 @@ jobs:
   deploy_to_production:
     name: "Deploy to Production"
     needs:
-      - terraform_plan
       - build_and_publish
     if: startsWith(github.ref, 'refs/tags/')
     uses: ./.github/workflows/terraform-apply.yml
