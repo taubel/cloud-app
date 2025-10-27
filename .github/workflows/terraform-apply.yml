@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: prod
-      url: ${{ needs.terraform.outputs.public_ip }}
+      url: http://${{ needs.terraform.outputs.public_ip }}
     needs: terraform
     steps:
       - name: Checkout code
