@@ -11,8 +11,12 @@ on:
       - master
 
 jobs:
-  build:
+  build_and_publish:
     uses: ./.github/workflows/docker-publish.yml
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
 
   terraform_plan:
     name: "Terraform Plan"
