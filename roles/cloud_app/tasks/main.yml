@@ -10,7 +10,7 @@
   become: true
   community.docker.docker_container:
     name: cloud_app
-    image: ghcr.io/taubel/cloud-app:latest
+    image: ghcr.io/taubel/cloud-app:{{ app_image }}
     state: started
     recreate: "{{ pulled_image.changed }}"
     restart: "{{ pulled_image.changed }}"

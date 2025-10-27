@@ -2,6 +2,9 @@
   hosts: all
   gather_facts: true
 
+  vars:
+    app_image: latest
+
   roles:
     - role: geerlingguy.docker
       become: true

@@ -57,6 +57,7 @@ jobs:
     with:
       workspace: staging
       deploy_env: staging
+      app_image: latest
 
   deploy_to_production:
     name: "Deploy to Production"
@@ -68,3 +69,4 @@ jobs:
     with:
       workspace: prod
       deploy_env: prod
+      app_image: ${{ github.ref_name }}
