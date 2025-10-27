@@ -1,8 +1,18 @@
 ---
-- name: Run ls
-  ansible.builtin.shell: ls /
-  register: ls_output
+- name: Pull latest image
+  become: true
+  community.docker.docker_image:
+    name: ghcr.io/taubel/cloud-app:latest
+    source: pull
+  register: pulled_image
 
-- name: Show the output
-  ansible.builtin.debug:
-    var: ls_output.stdout_lines
+- name: Deploy app
+  become: true
+  community.docker.docker_container:
+    name: cloud_app
+    image: ghcr.io/taubel/cloud-app:latest
+    state: started
+    recreate: "{{ pulled_image.changed }}"
+    restart: "{{ pulled_image.changed }}"
+    ports:
+      - 80:8000
