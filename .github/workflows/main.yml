@@ -23,6 +23,26 @@ jobs:
       packages: write
       id-token: write
 
+  deploy_to_review:
+    name: "Deploy to Review"
+    needs:
+      - build_and_publish
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/terraform-apply.yml
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      workspace: review
+      deploy_env: review
+      app_image: latest
+      deploy: false
+    secrets:
+      ssh_public_key: "${{ secrets.SSH_PUBLIC_KEY }}"
+      ssh_private_key: "${{ secrets.SSH_PRIVATE_KEY }}"
+      aws_access_key: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+      aws_secret_access_key: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
   deploy_to_staging:
     name: "Deploy to Staging"
     needs:

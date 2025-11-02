@@ -21,6 +21,10 @@ on:
       app_image:
         required: true
         type: string
+      deploy:
+        required: false
+        type: boolean
+        default: true
 
 env:
   TF_VAR_ssh_public_key: "${{ secrets.ssh_public_key }}"
@@ -30,16 +34,14 @@ env:
 jobs:
   terraform_plan:
     name: "Terraform Plan"
-    runs-on: hashicorp/terraform
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:1.9.8
     permissions:
       contents: read
       pull-requests: write
     steps:
       - uses: actions/checkout@v3
-
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9.8
 
       - name: Terraform Init
         run: terraform init
@@ -61,7 +63,10 @@ jobs:
           path: ./tfplan
 
   terraform_apply:
-    runs-on: hashicorp/terraform
+    if: ${{ inputs.deploy }}
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:1.9.8
     needs: terraform_plan
     outputs:
       public_ip: ${{ steps.save_outputs.outputs.public_ip }}
@@ -69,10 +74,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.9.8
 
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
@@ -97,6 +98,7 @@ jobs:
           echo "user=ubuntu" >> "$GITHUB_OUTPUT"
 
   deploy:
+    if: ${{ inputs.deploy }}
     runs-on: ubuntu-latest
     needs: terraform_apply
     environment:
