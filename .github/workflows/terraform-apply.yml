@@ -30,7 +30,9 @@ env:
 jobs:
   terraform_plan:
     name: "Terraform Plan"
-    runs-on: hashicorp/terraform
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:1.9.8
     permissions:
       contents: read
       pull-requests: write
@@ -61,7 +63,9 @@ jobs:
           path: ./tfplan
 
   terraform_apply:
-    runs-on: hashicorp/terraform
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:1.9.8
     needs: terraform_plan
     outputs:
       public_ip: ${{ steps.save_outputs.outputs.public_ip }}
