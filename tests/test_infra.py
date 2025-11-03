@@ -6,10 +6,11 @@ from subprocess import CompletedProcess
 import pytest
 import requests
 
-# TODO make configurable
-HOST = "16.170.229.7"
-USER = "ubuntu"
-PRIVATE_KEY_PATH = "./github_actions"
+from .settings import get_host, get_user, get_private_key_path
+
+HOST = get_host()
+USER = get_user()
+PRIVATE_KEY_PATH = get_private_key_path()
 
 
 def run_command(command: str) -> CompletedProcess:
