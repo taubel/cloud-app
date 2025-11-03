@@ -1,11 +1,6 @@
-import shlex
-import subprocess
 import uuid
-from subprocess import CompletedProcess
 
-import pytest
-import requests
-
+from .common import run_command, format_process_error
 from .settings import get_host, get_user, get_private_key_path
 
 HOST = get_host()
@@ -13,35 +8,9 @@ USER = get_user()
 PRIVATE_KEY_PATH = get_private_key_path()
 
 
-def run_command(command: str) -> CompletedProcess:
-    split_command = shlex.split(command)
-    return subprocess.run(split_command, capture_output=True)
-
-
-def format_process_error(process: CompletedProcess, message: str) -> str:
-    return message + (f"\nProcess info"
-                      f"\nArgs: {process.args}"
-                      f"\nReturn code: {process.returncode}"
-                      f"\nStdout: {process.stdout.decode()}"
-                      f"\nStderr: {process.stderr.decode()}")
-
-
-@pytest.mark.parametrize("port", [22, 80])
-def test_ports_are_open(port: int):
-    timeout = 1
-    proc = run_command(f"nc -z -w {timeout} {HOST} {port}")
-    assert proc.returncode == 0, format_process_error(proc, f"Port {port} is not open")
-
-
-def test_other_port_is_not_open():
-    timeout = 1
-    port = 8080
-    proc = run_command(f"nc -z -w {timeout} {HOST} {port}")
-    assert proc.returncode != 0, format_process_error(proc, f"Port {port} should not be open")
-
-
 # TODO refactor ssh code to reduce repeating code
 # TODO handle host key changed/unrecognized
+# TODO port to paramiko?
 def test_ssh_run_command():
     text = "Hello from the cloud!"
     proc = run_command(f"ssh -i {PRIVATE_KEY_PATH} {USER}@{HOST} echo {text}")
@@ -85,10 +54,3 @@ def test_ssh_random_key_pair_does_not_work(tmp_path):
     text = "Hello from the cloud!"
     proc = run_command(f"ssh -i {random_key_path} {USER}@{HOST} echo {text}")
     assert proc.returncode != 0, format_process_error(proc, f"Command passed with random key")
-
-
-def test_http_get():
-    response = requests.get(f"http://{HOST}:80/")
-    assert response.status_code == 200, (f"GET request failed. "
-                                         f"Status code: {response.status_code}, "
-                                         f"reason: {response.reason}, payload: {response.text}")
