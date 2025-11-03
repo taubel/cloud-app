@@ -92,18 +92,3 @@ def test_http_get():
     assert response.status_code == 200, (f"GET request failed. "
                                          f"Status code: {response.status_code}, "
                                          f"reason: {response.reason}, payload: {response.text}")
-
-
-# TODO boto3
-def test_s3_put_object():
-    pass
-
-
-# TODO boto3
-def test_s3_get_object():
-    pass
-
-
-# TODO boto3
-def test_s3_delete_object():
-    pass
